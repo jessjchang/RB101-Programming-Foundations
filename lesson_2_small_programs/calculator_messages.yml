@@ -1,0 +1,86 @@
+# English Messages
+en:
+  language_prompt: |
+    For English, enter '1'
+    > Pour Français, entrez '2'
+    > Para Español, entra '3'
+  valid_language: |
+    Please enter a valid language option.
+    > Veuillez entrer une option de langue valide. 
+    > Por favor ingrese una opción de idioma válido.
+  welcome: "Welcome to Calculator! Enter your name:"
+  valid_name: "Make sure to use a valid name."
+  greeting: "Hi %{custom_data1}!"
+  get_number1: "What's the first number?"
+  get_number2: "What's the second number?"
+  valid_number: "Hmm... that doesn't look like a valid number"
+  operator_prompt: |
+    What operation would you like to perform?
+      1) add
+      2) subtract
+      3) multiply
+      4) divide
+  valid_operator: "Must choose 1, 2, 3 or 4"
+  zero_division_message: "Sorry, can't divide by zero! Please choose operation 1, 2, or 3."
+  operation_message: "%{custom_data1} %{custom_data2} and %{custom_data3}..."
+  adding: "Adding"
+  subtracting: "Subtracting"
+  multiplying: "Multiplying"
+  dividing: "Dividing"
+  result_message: "The result is %{custom_data1}"
+  calculate_again: "Do you want to perform another calculation? (Enter 'Y' to calculate again / 'N' to quit)"
+  valid_recalculate_input: "Must enter 'Y' for yes or 'N' for no."
+  goodbye: "Thank you for using the calculator. Good bye!"
+
+# French Messages
+fr:
+  welcome: "Bienvenue dans la calculatrice! Entrez votre nom:"
+  valid_name: "Utilisez un nom valide."
+  greeting: "Bonjour %{custom_data1}!"
+  get_number1: "Quel est le premier nombre?"
+  get_number2: "Quel est le deuxième nombre?"
+  valid_number: "Hmm ... ça ne ressemble pas à un nombre valide"
+  operator_prompt: |
+    Quelle opération souhaitez-vous effectuer?
+      1) ajouter
+      2) soustraire
+      3) multiplier
+      4) diviser
+  valid_operator: "Il faut choisir 1, 2, 3 ou 4"
+  zero_division_message: "Désolé, impossible de diviser par zéro! Veuillez choisir l'opération 1, 2 ou 3."
+  operation_message: "%{custom_data1} %{custom_data2} et %{custom_data3}..."
+  adding: "En train d'ajouter"
+  subtracting: "En train de soustraire"
+  multiplying: "En train de multiplier"
+  dividing: "En train de diviser"
+  result_message: "Le résultat est %{custom_data1}"
+  calculate_again: "Voulez-vous effectuer un autre calcul? (Entrez 'Y' pour calculer à nouveau / 'N' pour quitter)"
+  valid_recalculate_input: "Il faut entrer 'Y' pour oui ou 'N' pour non."
+  goodbye: "Merci d'utiliser la calculatrice. Au revoir!"
+
+# Spanish Messages
+es:
+  welcome: "Bienvenido a la calculadora! Entre su nombre:"
+  valid_name: "Asegúrese de entrar un nombre válido."
+  greeting: "Hola %{custom_data1}!"
+  get_number1: "¿Cuál es el primer número?"
+  get_number2: "¿Cual es el segundo numero?"
+  valid_number: "Hmm ... eso no parece un número válido"
+  operator_prompt: |
+    ¿Qué operación le gustaría realizar?
+      1) añadir
+      2) sustraer
+      3) multiplicar
+      4) dividir
+  valid_operator: "Elija 1, 2, 3 o 4"
+  zero_division_message: "Lo siento, no se puede dividir por cero. Elija la operación 1, 2 o 3."
+  operation_message: "%{custom_data1} %{custom_data2} y %{custom_data3}..." #%{operation_to_message(operator)} %{number1}...
+  adding: "Agregando"
+  subtracting: "Restando"
+  multiplying: "Multiplicar"
+  dividing: "Divisor"
+  result_message: "El resultado es %{custom_data1}"
+  calculate_again: "¿Quieres realizar otro cálculo? (Ingrese 'Y' para calcular nuevamente / 'N' para salir)"
+  valid_recalculate_input: "Debe ingresar 'Y' para sí o 'N' para no."
+  goodbye: "Gracias por usar la calculadora. ¡Adiós!"
+
