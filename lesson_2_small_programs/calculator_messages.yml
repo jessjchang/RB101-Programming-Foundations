@@ -74,7 +74,7 @@ es:
       4) dividir
   valid_operator: "Elija 1, 2, 3 o 4"
   zero_division_message: "Lo siento, no se puede dividir por cero. Elija la operación 1, 2 o 3."
-  operation_message: "%{custom_data1} %{custom_data2} y %{custom_data3}..." #%{operation_to_message(operator)} %{number1}...
+  operation_message: "%{custom_data1} %{custom_data2} y %{custom_data3}..."
   adding: "Agregando"
   subtracting: "Restando"
   multiplying: "Multiplicar"
