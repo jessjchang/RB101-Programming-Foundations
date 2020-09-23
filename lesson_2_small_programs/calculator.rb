@@ -10,7 +10,7 @@ LANGUAGE = {
 }
 
 # ---------- Methods ----------
-def cleanup
+def clear_screen
   Kernel.system('clear')
 end
 
@@ -50,14 +50,18 @@ def get_name(lang)
   name = ''
   loop do
     name = Kernel.gets().chomp()
-
-    if check_name(name)
-      break
-    else
-      prompt('valid_name', lang)
-    end
+    break if check_name(name)
+    prompt('valid_name', lang)
   end
   name
+end
+
+def display_greeting(lang)
+  prompt('welcome', lang)
+
+  name = get_name(lang)
+
+  prompt('greeting', lang, name)
 end
 
 def valid_integer?(num)
@@ -77,12 +81,8 @@ def get_number(num_place, lang)
   loop do
     prompt(num_place, lang)
     number = Kernel.gets().chomp()
-
-    if valid_number?(number)
-      break
-    else
-      prompt('valid_number', lang)
-    end
+    break if valid_number?(number)
+    prompt('valid_number', lang)
   end
   number
 end
@@ -138,29 +138,29 @@ def final_calc(number1, number2, operator, lang)
   prompt('result_message', lang, result)
 end
 
-def calc_again(lang)
+def calc_again?(lang)
   prompt('calculate_again', lang)
 
   answer = ''
   loop do
     answer = Kernel.gets().chomp()
-    break if answer.downcase() == 'y' ||
-             answer.downcase() == 'yes' ||
-             answer.downcase() == 'n' ||
-             answer.downcase() == 'no'
+    break if ['y', 'yes', 'n', 'no'].include?(answer.downcase())
     prompt('valid_recalculate_input', lang)
   end
-  answer
+
+  ['y', 'yes'].include?(answer.downcase())
+end
+
+def display_goodbye(lang)
+  prompt('goodbye', lang)
 end
 
 # ---------- Program Start ----------
-cleanup()
+clear_screen()
 
 lang = get_language()
 
-prompt('welcome', lang)
-name = get_name(lang)
-prompt('greeting', lang, name)
+display_greeting(lang)
 
 # ---------- Main Loop ----------
 loop do
@@ -171,9 +171,8 @@ loop do
 
   final_calc(number1, number2, operator, lang)
 
-  answer = calc_again(lang)
-  break if answer.downcase() == 'n' || answer.downcase() == 'no'
-  cleanup()
+  break unless calc_again?(lang)
+  clear_screen()
 end
 
-prompt('goodbye', lang)
+display_goodbye(lang)
