@@ -1,0 +1,51 @@
+welcome: "Welcome to the Loan Calculator! Please enter your name:"
+valid_name: "Please use a valid name (alphabetic characters only)."
+greeting: "Hello, %{custom_data1}! Let's calculate the monthly payment amount for your loan."
+get_loan_amount: |
+  What is the loan amount?
+  > For example: enter 100 if $100 or 100.55 if $100.55
+get_annual_interest_rate: |
+  What is the loan's Annual Percentage Rate (APR)?
+  > For example: enter 3 if 3%% or 2.5 if 2.5%%
+get_loan_years: |
+  What is the loan duration (in years)? 
+  > If loan is less than one year, enter 0.
+  > If loan includes additional months, only enter years right now. You will be prompted for the additional months afterwards.
+  > For example, if loan is 2 years and 6 months, enter 2.
+get_loan_addl_months: "How many additional months is the loan?"
+zero_loan_input: |
+  Sorry, your loan amount can't be $0! 
+  > Please enter a number greater than 0." 
+valid_amount: |
+  Sorry, that doesn't look like a valid loan amount! 
+  > Please enter a positive number with a maximum of two decimal digits (numeric digits only).
+valid_rate: |
+  Sorry, that doesn't look like a valid interest rate!
+  Please enter a positive number (numeric digits only).
+valid_year_duration: |
+  Sorry, that doesn't look like a valid loan duration!
+  Please enter a whole number (numeric digits only).
+valid_month_duration: |
+  Sorry, that doesn't look like a valid loan duration in months!
+  Please enter a whole number (numeric digits only) less than 12.
+valid_addl_months: |
+  Sorry, your total loan duration cannot be 0 years and 0 months! 
+  > Please enter a positive whole number (numeric digits only).
+calculating_result: "Calculating the monthly payment for your $%{custom_data1} loan..."
+final_result: "The monthly payment for your loan is $%{custom_data1}. See details below:"
+loan_details: |
+  Loan Details:
+  > Loan Amount: $%{custom_data1}
+  > Loan Term In Months: %{custom_data2} months
+  > Annual Interest Rate: %{custom_data3}%%
+  > Monthly Interest Rate: %{custom_data4}%%
+total_details: |
+  Total Payments:
+  > Total Interest: $%{custom_data1}
+  > Total Payment Including Interest: $%{custom_data2}
+  >>> Payment Every Month: $%{custom_data3}
+recalculate: |
+  Would you like to calculate payments for another loan?
+  > Enter 'Y' to calculate again / 'N' to quit
+valid_recalculate_input: "Must enter 'Y' for yes or 'N' for no."
+goodbye: "Thank you for using the Loan Calculator! Have a nice day!"
