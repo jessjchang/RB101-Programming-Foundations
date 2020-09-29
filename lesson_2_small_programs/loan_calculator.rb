@@ -4,7 +4,7 @@ MESSAGES = YAML.load_file('loan_calc_messages.yml')
 
 # ---------- Methods ---------- #
 def clear_screen
-  system('clear')
+  system 'clear'
 end
 
 def messages(message_key)
@@ -25,7 +25,7 @@ def prompt(message_key,
   else
     message = messages(message_key)
   end
-  puts("=> #{message}")
+  puts message
 end
 
 def check_name(name)
@@ -160,25 +160,50 @@ def calc_total_payment(loan_amount, total_interest)
   loan_amount + total_interest
 end
 
-def final_calculation(loan_amount, annual_interest_rate,
-                      loan_years, loan_addl_months)
+def display_calculating_message(loan_amount)
   prompt('calculating_result', format_amount(loan_amount))
+end
 
-  total_loan_months = calc_total_loan_months(loan_years, loan_addl_months)
-  monthly_interest_rate = calc_monthly_interest_rate(annual_interest_rate)
-  monthly_payment = calc_monthly_payment(loan_amount, monthly_interest_rate,
-                                         total_loan_months)
-  total_interest = calc_total_interest(monthly_payment, total_loan_months,
-                                       loan_amount)
-  total_payment = calc_total_payment(loan_amount, total_interest)
+def calc_final_result(loan_amount, annual_interest_rate,
+                      loan_years, loan_addl_months)
+  calculations = { total_loan_months: 0, monthly_interest_rate: 0,
+                   monthly_payment: 0, total_interest: 0, total_payment: 0 }
 
-  prompt('final_result', format_amount(monthly_payment))
+  calculations[:total_loan_months] =
+    calc_total_loan_months(loan_years, loan_addl_months)
+  calculations[:monthly_interest_rate] =
+    calc_monthly_interest_rate(annual_interest_rate)
+  calculations[:monthly_payment] =
+    calc_monthly_payment(loan_amount, calculations[:monthly_interest_rate],
+                         calculations[:total_loan_months])
+  calculations[:total_interest] =
+    calc_total_interest(calculations[:monthly_payment],
+                        calculations[:total_loan_months], loan_amount)
+  calculations[:total_payment] =
+    calc_total_payment(loan_amount, calculations[:total_interest])
 
-  prompt('loan_details', format_amount(loan_amount), total_loan_months,
-         format_rate(annual_interest_rate), format_rate(monthly_interest_rate))
+  calculations
+end
 
-  prompt('total_details', format_amount(total_interest),
-         format_amount(total_payment), format_amount(monthly_payment))
+def display_final_calculation(loan_amount,
+                              annual_interest_rate,
+                              loan_years,
+                              loan_addl_months)
+  calculations = calc_final_result(loan_amount,
+                                   annual_interest_rate,
+                                   loan_years,
+                                   loan_addl_months)
+
+  prompt('final_result', format_amount(calculations[:monthly_payment]))
+
+  prompt('loan_details', format_amount(loan_amount),
+         calculations[:total_loan_months],
+         format_rate(annual_interest_rate),
+         format_rate(calculations[:monthly_interest_rate]))
+
+  prompt('total_details', format_amount(calculations[:total_interest]),
+         format_amount(calculations[:total_payment]),
+         format_amount(calculations[:monthly_payment]))
 end
 
 def recalc?
@@ -199,28 +224,30 @@ def display_goodbye
 end
 
 # ---------- Program Start ---------- #
-clear_screen()
+clear_screen
 
-display_greeting()
+display_greeting
 
 # ---------- Main Loop ---------- #
 loop do
-  loan_amount = get_loan_amount()
+  loan_amount = get_loan_amount
 
-  annual_interest_rate = get_annual_interest_rate()
+  annual_interest_rate = get_annual_interest_rate
 
-  loan_years = get_loan_years()
+  loan_years = get_loan_years
 
   loan_addl_months = get_loan_addl_months(loan_years)
 
-  final_calculation(loan_amount,
-                    annual_interest_rate,
-                    loan_years,
-                    loan_addl_months)
+  display_calculating_message(loan_amount)
 
-  break unless recalc?()
+  display_final_calculation(loan_amount,
+                            annual_interest_rate,
+                            loan_years,
+                            loan_addl_months)
 
-  clear_screen()
+  break unless recalc?
+
+  clear_screen
 end
 
-display_goodbye()
+display_goodbye
