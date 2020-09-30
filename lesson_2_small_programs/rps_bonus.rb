@@ -61,7 +61,7 @@ def prompt(message_key,
   puts("=> #{message}")
 end
 
-def check_name(name)
+def valid_name?(name)
   /\A[[:alpha:]]*[[:blank:]]?([[:alpha:]]+)\z/.match(name)
 end
 
@@ -70,7 +70,7 @@ def get_name
 
   loop do
     name = gets.chomp
-    break if check_name(name)
+    break if valid_name?(name)
     prompt('valid_name')
   end
 
@@ -109,7 +109,7 @@ def get_player_choice
       display_options
     else
       puts "\n"
-      prompt('valid_choice')
+      prompt('invalid_move_choice')
     end
   end
 end

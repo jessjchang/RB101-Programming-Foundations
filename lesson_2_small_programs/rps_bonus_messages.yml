@@ -22,7 +22,7 @@ options: |
     4) 'lizard' or 'l'
     5) 'spock' or 'sp'
     > Enter 'rules' if you'd like a refresher on the game rules.
-valid_choice: |
+invalid_move_choice: |
   Sorry, that's not a valid choice.
   > Please enter one of the following options to make your choice: 'rock' ('r'), 'paper' ('p'), 'scissors' ('sc'), 'lizard' ('l'), or 'spock' ('sp').
   > Enter 'rules' if you'd like a refresher on the game rules.
