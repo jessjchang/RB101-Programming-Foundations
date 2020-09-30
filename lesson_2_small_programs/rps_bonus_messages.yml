@@ -1,0 +1,62 @@
+welcome: "Welcome to Rock, Paper, Scissors, Lizard, Spock! Enter your name:"
+valid_name: |
+  Please use a valid name (alphabetic characters only).
+greeting: |+
+  Hello, %{custom_data1}! Let's play!
+
+rules: |+
+  Here are the rules to win:
+  > Rock crushes Scissors, and crushes Lizard
+  > Paper covers Rock, and disproves Spock
+  > Scissors cuts Paper, and decapitates Lizard
+  > Lizard poisons Spock, and eats Paper
+  > Spock vaporizes Rock, and smashes Scissors
+  >>> You'll make your choice first, then the computer will take their turn.
+  >>> The first to win %{custom_data1} rounds will be crowned the grand winner. Good luck!
+
+options: |
+  Choose one (Enter the full option name or abbreviation):
+    1) 'rock' or 'r'
+    2) 'paper' or 'p'
+    3) 'scissors' or 'sc'
+    4) 'lizard' or 'l'
+    5) 'spock' or 'sp'
+    > Enter 'rules' if you'd like a refresher on the game rules.
+valid_choice: |
+  Sorry, that's not a valid choice.
+  > Please enter one of the following options to make your choice: 'rock' ('r'), 'paper' ('p'), 'scissors' ('sc'), 'lizard' ('l'), or 'spock' ('sp').
+  > Enter 'rules' if you'd like a refresher on the game rules.
+display_choices: |+
+  You chose: %{custom_data1}, and Computer chose: %{custom_data2}.
+
+display_choice_action: |+
+  %{custom_data1} %{custom_data2} %{custom_data3}.
+
+same_choice: |+
+  Looks like your choice of %{custom_data1} and the computer's choice of %{custom_data2} are identical. Neither one can prevail over the other...
+
+display_winner: |+
+  %{custom_data1} won this round!
+
+tie: |+
+  It's a tie!
+
+display_current_score: |+
+  The current point standings are:
+  > Player: %{custom_data1}
+  > Computer: %{custom_data2}
+
+match_over: |+
+  And that's %{custom_data1} rounds won! Looks like we've found our grand winner...
+
+match_continues: |+
+  Game's not over yet! Remember, the first to %{custom_data1} points wins. On to the next round...
+
+display_grand_winner: |+
+  The grand winner of this match is %{custom_data1}!
+
+replay: |
+  Would you like to play again?
+  > Enter 'Y' to play again / 'N' to quit
+valid_replay_input: "Must enter 'Y' for yes or 'N' for no."
+goodbye: "Thank you for playing! Have a nice day!"
