@@ -1,0 +1,63 @@
+welcome: "Welcome to Tic Tac Toe! Enter your name:"
+
+invalid_name: "Please use a valid name (alphabetic characters only)."
+
+greeting: |+
+  Hello, %{custom_data1}! Let's play!
+
+choose_board_size: |
+  First, please enter the size of the board you'd like to play on.
+  > Enter an odd integer that will denote the number of rows/columns of the board.
+  > For example, if you'd like to play on a 3 x 3 board, enter '3'.
+
+invalid_board_size: "Sorry, that's not a valid board size. Please enter an odd integer greater than or equal to 3:"
+
+rules: |+
+  Here are the rules:
+  > Your marker is %{custom_data1}. The Computer's marker is %{custom_data2}.
+  > You and the Computer will alternate moves, and whoever successfully places their marker in every square of a single row, column, or diagonal first wins the round.
+  > The first to win %{custom_data3} rounds will be the grand winner of the match!
+  > The numbered positions of each square on the board are as follows:
+
+choose_starting_user: |
+  Would you like to make the first move?
+  > Enter 'Y' if you want to move first / 'N' if you want the Computer to move first.
+
+invalid_yes_or_no_input: "Must enter 'Y' for yes or 'N' for no."
+
+display_starting_user: "%{custom_data1} will go first in this round."
+
+display_current_board: "Here is the current board. Your marker is %{custom_data1}. Computer's marker is %{custom_data2}."
+
+player_choice: |
+  Choose a position number from this list of open squares: %{custom_data1}
+  > Enter 'rules' if you'd like a refresher on the rules and board positions.
+
+invalid_player_choice: |+
+  Sorry, that's not a valid choice.
+
+display_round_winner: |+
+  %{custom_data1} won this round!
+
+tie: |+
+  It's a tie!
+
+display_current_score: |+
+  The current point standings are:
+  > Player: %{custom_data1}
+  > Computer: %{custom_data2}
+
+match_over: |+
+  That's %{custom_data1} rounds won! Looks like we've found our grand winner...
+
+match_continues: |+
+  Game's not over yet! Remember, the first to %{custom_data1} points wins. On to the next round...
+
+display_grand_winner: |+
+  The grand winner of this match is %{custom_data1}!
+
+replay: |
+  Would you like to play again?
+  > Enter 'Y' to play again / 'N' to quit
+
+goodbye: "Thank you for playing Tic Tac Toe! Goodbye!"
