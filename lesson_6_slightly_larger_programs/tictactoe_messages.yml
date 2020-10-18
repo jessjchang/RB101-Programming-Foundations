@@ -19,6 +19,8 @@ rules: |+
   > The first to win %{custom_data3} rounds will be the grand winner of the match!
   > The numbered positions of each square on the board are as follows:
 
+enter_to_continue: "Press enter to continue with the game."
+
 choose_starting_user: |
   Would you like to make the first move?
   > Enter 'Y' if you want to move first / 'N' if you want the Computer to move first.

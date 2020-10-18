@@ -214,7 +214,9 @@ def display_rules(brd_size)
   clear_screen
   prompt('rules', PLAYER_MARKER, COMPUTER_MARKER, WINNING_SCORE)
   display_rule_board_positions(brd_size)
-  pause_prompt
+  prompt('enter_to_continue')
+  STDIN.gets
+  clear_screen
 end
 
 def starting_score
@@ -561,6 +563,7 @@ loop do
                board_full?(board)
     end
 
+    clear_screen
     display_board(board, board_size)
 
     display_round_result(board, winning_lines, board_size)
