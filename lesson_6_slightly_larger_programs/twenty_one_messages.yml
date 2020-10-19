@@ -17,9 +17,9 @@ rules: |+
     2. YOU will go first. At each turn, you may choose to 'hit' or 'stay'. 
     3. If YOU 'hit', another card from the deck will be drawn, and you will again be asked to 'hit' or 'stay'.
     4. YOU may continue to 'hit' until you either 'bust' or choose to 'stay'.
-    5. If YOU 'bust' (i.e. card value total exceeds %{custom_data1}), the DEALER wins the round
+    5. If YOU 'bust' (i.e. card value total exceeds %{custom_data1}), the DEALER wins the round.
     6. If YOU choose to 'stay' before busting, it will be the DEALER'S turn.
-    7. If the DEALER 'busts', YOU win the round
+    7. If the DEALER 'busts', YOU win the round.
     8. If the DEALER 'stays' before busting, the player with the higher card value total wins the round.
   > The first to win %{custom_data2} rounds will be the grand winner!
 
@@ -27,9 +27,11 @@ enter_to_continue: "Press enter to continue with the game."
 
 lets_play: "Cards have been shuffled. Let's begin!"
 
-initial_deal: |+
+players_initial_deal: |
   YOUR first card is %{custom_data1}, and your second card is %{custom_data2}. YOUR card value total: %{custom_data3}.
-  => DEALER'S first card is %{custom_data4}. Their second card is not visible to you. 
+
+dealers_initial_deal: |+
+  DEALER'S first card is %{custom_data1}. Their second card is not visible to you. 
 
 get_players_choice: |
   Please choose to '(h)it' or '(s)tay'. 
@@ -86,7 +88,7 @@ match_continues: |+
   Match isn't over yet! Remember, the first to %{custom_data1} points wins. On to the next round...
 
 display_grand_winner: |+
-  The grand winner of this match is %{custom_data1}
+  The grand winner of this match is: %{custom_data1}
 
 replay: |
   Would you like to play again?
