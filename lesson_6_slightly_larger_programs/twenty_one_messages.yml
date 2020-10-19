@@ -1,0 +1,97 @@
+welcome: "Welcome to Twenty-One! Enter your name:"
+
+invalid_name: "Please use a valid name (alphabetic characters only)."
+
+greeting: |+
+  Hello, %{custom_data1}! Let's play!
+
+rules: |+
+  Here are the rules:
+  > The Goal: Get your card value total as close to %{custom_data1} as possible, without going over.
+  > Card values are:
+    > 2-10: face value
+    > Jack, Queen, or King: 10
+    > Ace: 1 or 11 depending on card value total (11 if total doesn't exceed %{custom_data1}, otherwise 1)
+  > Gameplay:
+    1. YOU and the DEALER will each be dealt 2 cards from a shuffled 52-card deck.
+    2. YOU will go first. At each turn, you may choose to 'hit' or 'stay'. 
+    3. If YOU 'hit', another card from the deck will be drawn, and you will again be asked to 'hit' or 'stay'.
+    4. YOU may continue to 'hit' until you either 'bust' or choose to 'stay'.
+    5. If YOU 'bust' (i.e. card value total exceeds %{custom_data1}), the DEALER wins the round
+    6. If YOU choose to 'stay' before busting, it will be the DEALER'S turn.
+    7. If the DEALER 'busts', YOU win the round
+    8. If the DEALER 'stays' before busting, the player with the higher card value total wins the round.
+  > The first to win %{custom_data2} rounds will be the grand winner!
+
+enter_to_continue: "Press enter to continue with the game."
+
+lets_play: "Cards have been shuffled. Let's begin!"
+
+initial_deal: |+
+  YOUR first card is %{custom_data1}, and your second card is %{custom_data2}. YOUR card value total: %{custom_data3}.
+  => DEALER'S first card is %{custom_data4}. Their second card is not visible to you. 
+
+get_players_choice: |
+  Please choose to '(h)it' or '(s)tay'. 
+  > Enter 'rules' if you'd like a refresher on the game rules.
+
+invalid_players_choice: |+
+  Sorry, that's not a valid choice.
+
+display_cards: |+
+  %{custom_data1} cards: %{custom_data2}. 
+  > %{custom_data1} card value total: %{custom_data3}.
+
+hit: |+
+  %{custom_data1} chose to hit!
+  > The next card drawn is: %{custom_data2}.
+
+player_stay: |+
+  You chose to stay at a card value total of %{custom_data1}.
+  > DEALER'S turn now...
+
+player_bust: |+
+  Oh no, looks like you busted! 
+
+dealer_bust: |+
+  DEALER'S card value total of %{custom_data1} exceeds %{custom_data2}. Looks like DEALER busted!
+
+dealer_stay: |+
+  DEALER stays. Let's compare cards...
+
+final_winner: |+
+  Winner of this round: %{custom_data1}
+
+tie: |+
+  It's a tie!
+
+display_round_result: |+
+  ROUND RESULTS:
+
+scores_divider: |+
+  ==================================
+
+winner_divider: |+
+  ----------------------------------
+
+display_current_score: |+
+  The current point standings are:
+  > YOU: %{custom_data1}
+  > DEALER: %{custom_data2}
+
+match_over: |+
+  That's %{custom_data1} rounds won! Looks like we've found our grand winner...
+
+match_continues: |+
+  Match isn't over yet! Remember, the first to %{custom_data1} points wins. On to the next round...
+
+display_grand_winner: |+
+  The grand winner of this match is %{custom_data1}
+
+replay: |
+  Would you like to play again?
+  > Enter 'Y' to play again / 'N' to quit
+
+invalid_replay_input: "Must enter 'Y' for yes or 'N' for no."
+
+goodbye: "Thank you for playing Twenty-One! Have a nice day!"
