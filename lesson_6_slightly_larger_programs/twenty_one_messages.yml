@@ -27,17 +27,17 @@ enter_to_continue: "Press enter to continue with the game."
 
 lets_play: "Cards have been shuffled. Let's begin!"
 
-players_initial_deal: |
+player_initial_deal: |
   YOUR first card is %{custom_data1}, and your second card is %{custom_data2}. YOUR card value total: %{custom_data3}.
 
-dealers_initial_deal: |+
+dealer_initial_deal: |+
   DEALER'S first card is %{custom_data1}. Their second card is not visible to you. 
 
-get_players_choice: |
+get_player_choice: |
   Please choose to '(h)it' or '(s)tay'. 
   > Enter 'rules' if you'd like a refresher on the game rules.
 
-invalid_players_choice: |+
+invalid_player_choice: |+
   Sorry, that's not a valid choice.
 
 display_cards: |+

@@ -71,13 +71,11 @@ end
 
 def retrieve_name
   name = ''
-
   loop do
     name = gets.chomp
     break if valid_name?(name)
     prompt('invalid_name')
   end
-
   name
 end
 
@@ -102,35 +100,37 @@ def display_rules
 end
 
 def starting_score
-  { players_score: 0, dealers_score: 0 }
+  { player_score: 0, dealer_score: 0 }
 end
 
 def initialize_deck
   DECK_CARD_VALUES.keys.product(DECK_SUITS.keys).shuffle
 end
 
-def draw_card(deck)
-  deck.shift
+def initialize_hands
+  { player_cards: {},
+    dealer_cards: {},
+    player_total: 0,
+    dealer_total: 0 }
 end
 
-def update_user_cards(cards, deck)
-  cards << draw_card(deck)
+def draw_card(deck)
+  deck.shift
 end
 
 def card_name(card)
   "#{DECK_CARD_VALUES[card.first]} of #{DECK_SUITS[card.last]}"
 end
 
-def user_card_names(cards)
-  cards.map { |card| card_name(card) }
+def correct_for_aces(card_values, sum)
+  num_aces = card_values.count('A')
+  num_aces.times { sum -= 10 if sum > WHATEVER_ONE }
+  sum
 end
 
-def update_user_cards_names(cards_names, card)
-  cards_names << card_name(card)
-end
-
-def calculate_total(cards)
-  card_values = cards.map(&:first)
+def calculate_total(hands, user)
+  user_cards = (user == 'player' ? :player_cards : :dealer_cards)
+  card_values = hands[user_cards].keys.map(&:first)
 
   sum = 0
   card_values.each do |card_value|
@@ -143,41 +143,63 @@ def calculate_total(cards)
            end
   end
 
-  num_aces = card_values.count('A')
-  num_aces.times { sum -= 10 if sum > WHATEVER_ONE }
-
-  sum
+  correct_for_aces(card_values, sum)
 end
 
-def initial_deal(deck, players_cards, dealers_cards)
-  2.times do
-    players_cards << draw_card(deck)
-    dealers_cards << draw_card(deck)
+def update_user_cards(deck, hands, user)
+  new_card = draw_card(deck)
+  if user == 'player'
+    hands[:player_cards][new_card] = card_name(new_card)
+  else
+    hands[:dealer_cards][new_card] = card_name(new_card)
   end
 end
 
-def display_initial_deal(players_cards_names, dealers_cards_names,
-                         players_total)
+def update_total(hands, user)
+  if user == 'player'
+    hands[:player_total] = calculate_total(hands, 'player')
+  else
+    hands[:dealer_total] = calculate_total(hands, 'dealer')
+  end
+end
+
+def update_hands(deck, hands, user)
+  update_user_cards(deck, hands, user)
+  update_total(hands, user)
+end
+
+def initial_deal(deck, hands)
+  2.times do
+    player_card = draw_card(deck)
+    hands[:player_cards][player_card] = card_name(player_card)
+    dealer_card = draw_card(deck)
+    hands[:dealer_cards][dealer_card] = card_name(dealer_card)
+  end
+  update_total(hands, 'player')
+  update_total(hands, 'user')
+end
+
+def display_initial_deal(hands)
   prompt('lets_play')
-  prompt('players_initial_deal',
-         players_cards_names.first,
-         players_cards_names.last,
-         players_total)
-  prompt('dealers_initial_deal',
-         dealers_cards_names.first)
+  prompt('player_initial_deal',
+         hands[:player_cards].values.first,
+         hands[:player_cards].values.last,
+         hands[:player_total])
+  prompt('dealer_initial_deal',
+         hands[:dealer_cards].values.first)
 end
 
 def valid_choice?(input)
   VALID_MOVES.include?(input)
 end
 
-def joinand(cards_names, delimiter=', ', joining_word='and')
-  case cards_names.size
-  when 1 then cards_names.first
-  when 2 then "#{cards_names.first} #{joining_word} #{cards_names.last}"
+def joinand(card_names, delimiter=', ', joining_word='and')
+  case card_names.size
+  when 1 then card_names.first
+  when 2 then "#{card_names.first} #{joining_word} #{card_names.last}"
   else
-    cards_names.each_with_object("") do |card_name, str|
-      str << if card_name == cards_names.last
+    card_names.each_with_object("") do |card_name, str|
+      str << if card_name == card_names.last
                "#{joining_word} #{card_name}"
              else
                "#{card_name}#{delimiter}"
@@ -186,25 +208,29 @@ def joinand(cards_names, delimiter=', ', joining_word='and')
   end
 end
 
-def display_cards(cards_names, user, total)
-  prompt('display_cards', user, joinand(cards_names), total)
+def display_cards(hands, user)
+  user_prompt = (user == 'player' ? 'YOUR' : "DEALER'S")
+  cards = (user == 'player' ? hands[:player_cards] : hands[:dealer_cards])
+  total = (user == 'player' ? hands[:player_total] : hands[:dealer_total])
+
+  prompt('display_cards', user_prompt, joinand(cards.values), total)
   pause_prompt
 end
 
-def detect_winner(players_total, dealers_total)
-  if busted?(players_total)
+def detect_winner(hands)
+  if busted?(hands[:player_total])
     'Dealer'
-  elsif busted?(dealers_total)
+  elsif busted?(hands[:dealer_total])
     'Player'
-  elsif players_total > dealers_total
+  elsif hands[:player_total] > hands[:dealer_total]
     'Player'
-  elsif dealers_total > players_total
+  elsif hands[:dealer_total] > hands[:player_total]
     'Dealer'
   end
 end
 
-def display_winner(players_total, dealers_total)
-  case detect_winner(players_total, dealers_total)
+def display_winner(hands)
+  case detect_winner(hands)
   when 'Player'
     prompt('final_winner', 'YOU!')
   when 'Dealer'
@@ -216,122 +242,101 @@ def display_winner(players_total, dealers_total)
   pause_prompt
 end
 
-def display_round_result(players_cards_names, dealers_cards_names,
-                         players_total, dealers_total)
+def display_round_result(hands)
   clear_screen
   prompt('display_round_result')
-  display_cards(players_cards_names, 'YOUR', players_total)
-  display_cards(dealers_cards_names, "DEALER'S", dealers_total)
+  display_cards(hands, 'player')
+  display_cards(hands, 'dealer')
   prompt('scores_divider')
-  detect_winner(players_total, dealers_total)
-  display_winner(players_total, dealers_total)
+  display_winner(hands)
 end
 
-def get_players_choice(players_cards_names, dealers_cards_names, players_total)
-  players_choice = ''
+def get_player_choice(hands)
+  player_choice = ''
   loop do
-    prompt('get_players_choice')
-    players_choice = gets.chomp.downcase
-    if valid_choice?(players_choice)
+    prompt('get_player_choice')
+    player_choice = gets.chomp.downcase
+    if valid_choice?(player_choice)
       break
-    elsif players_choice == 'rules'
+    elsif player_choice == 'rules'
       display_rules
-      display_cards(players_cards_names, 'YOUR', players_total)
-      prompt('dealers_initial_deal', dealers_cards_names.first)
+      display_cards(hands, 'player')
+      prompt('dealer_initial_deal', hands[:dealer_cards].values.first)
     else
-      prompt('invalid_players_choice')
+      prompt('invalid_player_choice')
     end
   end
-  players_choice
+  player_choice
 end
 
-def players_turn(deck, players_cards_names, dealers_cards_names,
-                 players_total, players_cards)
+def player_turn(deck, hands)
   loop do
-    players_choice = get_players_choice(players_cards_names,
-                                        dealers_cards_names, players_total)
-    if players_choice == 'stay' || players_choice == 's'
-      break
-    else
-      next_card = update_user_cards(players_cards, deck).last
-      update_user_cards_names(players_cards_names, next_card)
-      prompt('hit', 'YOU', players_cards_names.last)
-      players_total = calculate_total(players_cards)
-      display_cards(players_cards_names, 'YOUR', players_total)
-      break if busted?(players_total)
-    end
+    player_choice = get_player_choice(hands)
+    break if ['s', 'stay'].include?(player_choice)
+
+    update_hands(deck, hands, 'player')
+    next_card = hands[:player_cards].values.last
+    prompt('hit', 'YOU', next_card)
+    display_cards(hands, 'player')
+    break if busted?(hands[:player_total])
   end
-  players_total
 end
 
 def busted?(total)
   total > WHATEVER_ONE
 end
 
-def player_bust?(players_total, dealers_total,
-                 players_cards_names, dealers_cards_names, scores)
-  if busted?(players_total)
+def display_player_outcome(hands, scores)
+  if busted?(hands[:player_total])
     prompt('player_bust')
     enter_to_continue
-    display_round_result(players_cards_names, dealers_cards_names,
-                         players_total, dealers_total)
-    display_match_status(players_total, dealers_total, scores)
-    true
+    display_end_round_details(hands, scores)
   else
     puts "\n"
-    prompt('player_stay', players_total)
+    prompt('player_stay', hands[:player_total])
   end
 end
 
-def match_over_after_player_bust?(players_total, dealers_total,
-                                  players_cards_names, dealers_cards_names,
-                                  scores)
-  if player_bust?(players_total, dealers_total,
-                  players_cards_names, dealers_cards_names, scores)
+def match_over_after_player_bust?(hands, scores)
+  if busted?(hands[:player_total])
     match_over?(scores)
   end
 end
 
-def dealers_turn(deck, dealers_cards, dealers_cards_names, dealers_total)
+def dealer_turn(deck, hands)
   pause_prompt
   loop do
-    break if dealers_total >= DEALER_HIT_LIMIT
-    next_card = update_user_cards(dealers_cards, deck).last
-    update_user_cards_names(dealers_cards_names, next_card)
-    prompt('hit', 'DEALER', dealers_cards_names.last)
-    dealers_total = calculate_total(dealers_cards)
-    display_cards(dealers_cards_names, "DEALER'S", dealers_total)
+    break if hands[:dealer_total] >= DEALER_HIT_LIMIT
+    update_hands(deck, hands, 'dealer')
+    next_card = hands[:dealer_cards].values.last
+    prompt('hit', 'DEALER', next_card)
+    display_cards(hands, 'dealer')
   end
-  dealers_total
 end
 
-def dealer_outcome(players_total, dealers_total,
-                   players_cards_names, dealers_cards_names)
-  if busted?(dealers_total)
-    prompt('dealer_bust', dealers_total, WHATEVER_ONE)
+def display_dealer_outcome(hands, scores)
+  if busted?(hands[:dealer_total])
+    prompt('dealer_bust', hands[:dealer_total], WHATEVER_ONE)
     enter_to_continue
-    display_round_result(players_cards_names, dealers_cards_names,
-                         players_total, dealers_total)
+    display_end_round_details(hands, scores)
   else
     prompt('dealer_stay')
     enter_to_continue
   end
 end
 
-def display_compared_result(players_cards_names, dealers_cards_names,
-                            players_total, dealers_total)
-  if !busted?(dealers_total)
-    display_round_result(players_cards_names, dealers_cards_names,
-                         players_total, dealers_total)
+def display_compared_result(hands, scores)
+  if !busted?(hands[:dealer_total])
+    display_end_round_details(hands, scores)
   end
 end
 
-def update_score(players_total, dealers_total, scores)
-  case detect_winner(players_total, dealers_total)
+def update_score(hands, scores)
+  case detect_winner(hands)
   when 'Player'
-    scores[:players_score] += 1
+    scores[:player_score] += 1
   when 'Dealer'
-    scores[:dealers_score] += 1
+    scores[:dealer_score] += 1
   else
     scores
   end
@@ -339,19 +344,19 @@ end
 
 def display_current_score(scores)
   prompt('display_current_score',
-         scores[:players_score],
-         scores[:dealers_score])
+         scores[:player_score],
+         scores[:dealer_score])
 
   pause_prompt
 end
 
 def match_over?(scores)
-  scores[:players_score] == WINNING_SCORE ||
-    scores[:dealers_score] == WINNING_SCORE
+  scores[:player_score] == WINNING_SCORE ||
+    scores[:dealer_score] == WINNING_SCORE
 end
 
-def display_match_status(players_total, dealers_total, scores)
-  update_score(players_total, dealers_total, scores)
+def display_match_status(hands, scores)
+  update_score(hands, scores)
   display_current_score(scores)
 
   if match_over?(scores)
@@ -364,10 +369,15 @@ def display_match_status(players_total, dealers_total, scores)
   end
 end
 
+def display_end_round_details(hands, scores)
+  display_round_result(hands)
+  display_match_status(hands, scores)
+end
+
 def display_grand_winner(scores)
-  if scores[:players_score] == WINNING_SCORE
+  if scores[:player_score] == WINNING_SCORE
     prompt('display_grand_winner', 'YOU!')
-  elsif scores[:dealers_score] == WINNING_SCORE
+  elsif scores[:dealer_score] == WINNING_SCORE
     prompt('display_grand_winner', 'DEALER')
   end
   pause_prompt
@@ -405,36 +415,21 @@ loop do
     clear_screen
 
     deck = initialize_deck
-    players_cards = []
-    dealers_cards = []
+    hands = initialize_hands
 
-    initial_deal(deck, players_cards, dealers_cards)
-    players_total = calculate_total(players_cards)
-    dealers_total = calculate_total(dealers_cards)
-    players_cards_names = user_card_names(players_cards)
-    dealers_cards_names = user_card_names(dealers_cards)
-    display_initial_deal(players_cards_names, dealers_cards_names,
-                         players_total)
+    initial_deal(deck, hands)
+    display_initial_deal(hands)
 
-    players_total = players_turn(deck, players_cards_names,
-                                 dealers_cards_names, players_total,
-                                 players_cards)
-    break if match_over_after_player_bust?(players_total,
-                                           dealers_total,
-                                           players_cards_names,
-                                           dealers_cards_names,
-                                           scores)
-    next if busted?(players_total)
+    player_turn(deck, hands)
+    display_player_outcome(hands, scores)
+    break if match_over_after_player_bust?(hands, scores)
+    next if busted?(hands[:player_total])
 
-    dealers_total = dealers_turn(deck, dealers_cards,
-                                 dealers_cards_names, dealers_total)
-    dealer_outcome(players_total, dealers_total,
-                   players_cards_names, dealers_cards_names)
+    dealer_turn(deck, hands)
+    display_dealer_outcome(hands, scores)
 
-    display_compared_result(players_cards_names, dealers_cards_names,
-                            players_total, dealers_total)
+    display_compared_result(hands, scores)
 
-    display_match_status(players_total, dealers_total, scores)
     break if match_over?(scores)
   end
 
